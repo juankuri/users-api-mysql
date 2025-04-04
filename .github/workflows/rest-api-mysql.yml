@@ -1,7 +1,4 @@
-# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
-# For more information see: https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages
-
-name: Node.js Package
+name: Deploy mysql-api
 
 on:
   push:
@@ -15,7 +12,28 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: echo 'hello world'
+      - run: echo 'hello world ..'
       - run: ls -la
-      - run: docker build -t juankuri/dbmysql-restapi .
+      - run: touch .env
+      - run: echo 'DEV_DATABASE_URL=${{secrets.MYSQL_CONN}}'  >> .env
+      - run: cat .env
+      - run: npm install
+      - run: npm install -g sequelize-cli@6.2.0 
+
+      - run: sequelize db:migrate
+      - run: docker build -t adsoft/mysql-restapi:${{github.sha}} .
       - run: docker images
+      - run: docker run --name api -p 8080:8080 -d adsoft/mysql-restapi:${{github.sha}} 
+      - run: docker ps
+      - run: docker exec api ls -la
+
+  #    - run: curl 0.0.0.0:8080/api
+   
+      - name: docker login
+        env:
+          DOCKER_USER: ${{secrets.DOCKER_USER}}
+          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+        run:  docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+        
+      - name: docker push
+        run:  docker push ${{ secrets.DOCKER_USER}}/mysql-restapi:${{github.sha}}      
