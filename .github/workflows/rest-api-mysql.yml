@@ -1,4 +1,4 @@
-name: Deploy mysql-api
+name: Deploy users-api-mysql
 
 on:
   push:
@@ -17,15 +17,15 @@ jobs:
       - run: touch .env
       - run: echo 'DEV_DATABASE_URL=${{secrets.MYSQL_CONN}}'  >> .env
       - run: cat .env
-      - run: npm install
-      - run: npm install -g sequelize-cli@6.2.0 
+ #     - run: npm install
+#      - run: npm install -g sequelize-cli@6.2.0 
 
-      - run: sequelize db:migrate
-      - run: docker build -t juankuri/users-api-mysql:${{github.sha}} .
+#      - run: sequelize db:migrate
+      - run: docker build -t juankuri/users-mysql-api:${{github.sha}} .
       - run: docker images
-      - run: docker run --name api -p 8080:8080 -d juankuri/users-api-mysql:${{github.sha}} 
-      - run: docker ps
-      - run: docker exec api ls -la
+ #     - run: docker run --name api -p 8080:8080 -d juankuri/mysql-restapi:${{github.sha}} 
+ #     - run: docker ps
+ #     - run: docker exec api ls -la
 
   #    - run: curl 0.0.0.0:8080/api
    
@@ -36,4 +36,4 @@ jobs:
         run:  docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
         
       - name: docker push
-        run:  docker push ${{ secrets.DOCKER_USER}}/users-api-mysql:${{github.sha}}      
+        run:  docker push ${{ secrets.DOCKER_USER}}/users-mysql-api:${{github.sha}}      
