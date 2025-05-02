@@ -1,4 +1,6 @@
-var url = "http://localhost:3300/api/users";
+// var url = "http://localhost:3300/api/users";
+var url = "https://users-api-mysql.onrender.com/";
+
 
 function postUser() {
   console.log(url);
