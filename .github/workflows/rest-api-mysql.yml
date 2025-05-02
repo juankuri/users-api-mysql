@@ -9,51 +9,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-
       - run: echo 'hello world ..'
       - run: ls -la
-      
-      # Crear .env para la conexión a la DB
-      - run: echo 'DEV_DATABASE_URL=${{ secrets.MYSQL_CONN }}' >> .env
+      - run: touch .env
+      - run: echo 'DEV_DATABASE_URL=${{secrets.MYSQL_CONN}}'  >> .env
       - run: cat .env
-      
       - run: npm install
-      - run: npm install -g sequelize-cli@6.2.0
+      - run: npm install -g sequelize-cli@6.2.0 
 
       - run: sequelize db:migrate
-
-      # Construir la imagen
-      - run: docker build -t juankuri/users-api-mysql:${{ github.sha }} .
-
+      - run: docker build -t juankuri/users-api-mysql:${{github.sha}} .
       - run: docker images
-
-      # Ejecutar contenedor en segundo plano
-      - run: docker run --name api -p 8080:8080 -d juankuri/users-api-mysql:${{ github.sha }}
-
-      # Esperar a que el contenedor esté listo
-      - name: Esperar 10s antes de usar docker exec
-        run: sleep 10
-
-      # Mostrar estado del contenedor
-      - run: docker ps -a
-
-      # Explorar el contenedor
+      - run: docker run --name api -p 8080:8080 -d juankuri/users-api-mysql:${{github.sha}} 
+      - run: docker ps
       - run: docker exec api ls -la
 
-      # curl opcional para probar la API
-      # - run: curl http://localhost:8080/api
-
-      # Docker login
+  #    - run: curl 0.0.0.0:8080/api
+   
       - name: docker login
         env:
-          DOCKER_USER: ${{ secrets.DOCKER_USER }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-
-      # Docker push
+          DOCKER_USER: ${{secrets.DOCKER_USER}}
+          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+        run:  docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+        
       - name: docker push
-        run: docker push ${{ secrets.DOCKER_USER }}/users-api-mysql:${{ github.sha }}
+        run:  docker push ${{ secrets.DOCKER_USER}}/users-api-mysql:${{github.sha}}      
