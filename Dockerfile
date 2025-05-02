@@ -6,7 +6,7 @@ RUN apt-get install -y curl make g++
 RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
 RUN apt-get install -y nodejs
 
-ADD . /
+COPY . /app
 RUN npm install
 
 EXPOSE 8080

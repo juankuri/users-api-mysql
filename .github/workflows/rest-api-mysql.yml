@@ -21,9 +21,9 @@ jobs:
       - run: npm install -g sequelize-cli@6.2.0 
 
       - run: sequelize db:migrate
-      - run: docker build -t adsoft/mysql-restapi:${{github.sha}} .
+      - run: docker build -t juankuri/users-api-mysql:${{github.sha}} .
       - run: docker images
-      - run: docker run --name api -p 8080:8080 -d adsoft/mysql-restapi:${{github.sha}} 
+      - run: docker run --name api -p 8080:8080 -d juankuri/users-api-mysql:${{github.sha}} 
       - run: docker ps
       - run: docker exec api ls -la
 
@@ -36,4 +36,4 @@ jobs:
         run:  docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
         
       - name: docker push
-        run:  docker push ${{ secrets.DOCKER_USER}}/mysql-restapi:${{github.sha}}      
+        run:  docker push ${{ secrets.DOCKER_USER}}/users-api-mysql:${{github.sha}}      
