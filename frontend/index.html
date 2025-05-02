@@ -1,25 +1,102 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Consumo de REST-API de Usuarios</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión de Usuarios</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="container header-content">
+            <h1 class="header-title">Sistema de Gestión de Usuarios</h1>
+        </div>
+    </header>
 
-    <p>
-        Consumo de REST-API de Usuarios
-    </p>
+    <!-- Main Content -->
+    <div class="container content-wrapper">
+        <!-- User Form Card -->
+        <section class="card">
+            <div class="card-header">
+                <h2 class="card-title">Datos del Usuario</h2>
+            </div>
+            <div class="form-container">
+                <div class="form-group">
+                    <label for="id">ID</label>
+                    <input type="text" id="id" readonly placeholder="Auto-generado">
+                </div>
+                <div class="form-group">
+                    <label for="name">Nombre</label>
+                    <input type="text" id="name" placeholder="Ingrese nombre completo">
+                </div>
+                <div class="form-group">
+                    <label for="email">Correo electrónico</label>
+                    <input type="email" id="email" placeholder="correo@ejemplo.com">
+                </div>
+                <div class="form-group">
+                    <label for="age">Edad</label>
+                    <input type="number" id="age" placeholder="Ingrese edad">
+                </div>
+                <div class="form-group">
+                    <label for="comments">Comentarios</label>
+                    <input type="text" id="comments" placeholder="Añada comentarios adicionales">
+                </div>
+            </div>
+            <div class="buttons-container">
+                <button onclick="postUser()" class="btn btn-success">
+                    <i class="fas fa-plus-circle"></i> Crear
+                </button>
+                <button onclick="getUsers()" class="btn btn-primary">
+                    <i class="fas fa-sync-alt"></i> Actualizar Lista
+                </button>
+                <button onclick="putUser()" class="btn btn-warning">
+                    <i class="fas fa-edit"></i> Modificar
+                </button>
+                <button onclick="deleteUser()" class="btn btn-danger">
+                    <i class="fas fa-trash-alt"></i> Eliminar
+                </button>
+                <button onclick="clearForm()" class="btn btn-info">
+                    <i class="fas fa-broom"></i> Limpiar Formulario
+                </button>
+            </div>
+        </section>
 
-    <div><label>Name</label><input type="text" id="name"></div>
-    <div><label>Email</label><input type="text" id="email"></div>
-    <div><label>Age</label><input type="text" id="age"></div>
-    <div><label>Comments</label><input type="text" id="comments"></div>
+        <!-- Notifications Section -->
+        <div id="notifications"></div>
 
-    <button onclick="postUser()">POST user</button>
-    <button onclick="getUsers()">GET usuarios</button>
+        <!-- Users Table Card -->
+        <section class="card">
+            <div class="card-header">
+                <h2 class="card-title">Lista de Usuarios</h2>
+            </div>
+            <div class="table-responsive">
+                <div id="resultado">
+                    <p class="text-center"><i class="fas fa-spinner fa-spin"></i> Cargando usuarios...</p>
+                </div>
+            </div>
+        </section>
+    </div>
 
-    <div id="resultado"></div>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="callrestapi.js"></script>
+    <script>
+        // Función para limpiar el formulario
+        function clearForm() {
+            $('#id').val('');
+            $('#name').val('');
+            $('#email').val('');
+            $('#age').val('');
+            $('#comments').val('');
+        }
+
+        // Cargar los usuarios al iniciar la página
+        $(document).ready(function() {
+            getUsers();
+        });
+    </script>
 </body>
 </html>
