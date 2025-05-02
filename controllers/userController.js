@@ -13,8 +13,10 @@ const getAllUsers = async (req, res) => {
     console.log('getting users');
     try {
         const users = await models.juankuri.findAll({ include: [] });
+        console.log("Users fetched:", users); 
         return res.status(200).json({ users });
     } catch (error) {
+        console.error("Error fetching users:", error);
         return res.status(500).send(error.message);
     }
 };

@@ -1,5 +1,5 @@
 // var url = "http://localhost:3300/api/users";
-var url = "https://users-api-mysql.onrender.com/api/users";
+var url = "https://users-api-mysql-586a.onrender.com/api/users";
 
 
 function postUser() {
@@ -47,12 +47,12 @@ function postUser() {
       // Refrescar la lista de usuarios
       getUsers();
     },
-    error: function(xhr, status, error) {
-      console.error("Error en POST:", error);
-      console.error("Status:", status);
-      console.error("Response Text:", xhr.responseText);
-      $('#notifications').append('<div class="notification notification-danger"><i class="fas fa-times-circle"></i> Error al crear usuario: ' + error + '</div>');
-    },
+    // error: function(xhr, status, error) {
+    //   console.error("Error en POST:", error);
+    //   console.error("Status:", status);
+    //   console.error("Response Text:", xhr.responseText);
+    //   $('#notifications').append('<div class="notification notification-danger"><i class="fas fa-times-circle"></i> Error al crear usuario: ' + error + '</div>');
+    // },
     data: JSON.stringify(myuser)
   });
 }
